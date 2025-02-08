@@ -10,9 +10,9 @@ final ThemeData customTheme = ThemeData(
   ),
   textTheme: TextTheme(
     titleLarge: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-    titleMedium: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+    titleMedium: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
     titleSmall: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w300),
-    bodyLarge: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w100),
+    bodyLarge: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w200),
     bodyMedium: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w200),
     bodySmall: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w200),
   ),

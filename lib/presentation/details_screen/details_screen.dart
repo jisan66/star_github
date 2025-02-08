@@ -27,7 +27,7 @@ class DetailsScreen extends StatelessWidget {
                         ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                             child: Container(
-                              color: Colors.red,
+                              color: Colors.grey,
                               child: Icon(Icons.camera,
                                   color: Colors.white54, size: 120),
                             )),
@@ -59,36 +59,26 @@ class DetailsScreen extends StatelessWidget {
               Expanded(
                 flex: 5,
                 child: Container(
-                  padding: EdgeInsets.all(12),
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                   // width: double.infinity,
                   color: Color(0xFF161b22),
-                  child: Container(
-                    height: 90,
-                    width: 350,
-                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border:
-                            Border.all(color: Colors.white.withOpacity(.15))),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20),
-                        Text(
-                          'Repository Name',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        Text(
-                          'Repository Description',
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        Text(
-                          'Last update : 20-02-2024',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20),
+                      Text(
+                        'Repository Name',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        'Repository Description',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                      Text(
+                        'Last update : 20-02-2024',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
                   ),
                 ),
               ),
