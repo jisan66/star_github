@@ -1,17 +1,24 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../models/hive_model.dart';
 
 class HiveService {
-  static final Box<Item> _box = Hive.box<Item>('items');
+  final Box<Item> _box = Hive.box<Item>('items');
+  Box<Item> get box => _box;
 
-  static Future<void> storeItems(List<Item> items) async {
-    await _box.clear(); // Clear existing data before storing new items
+  Future<void> storeItems(List<Item> items) async {
+    debugPrint('is store items called??????');
+
+    await box.clear();
+    debugPrint("is store Items called-----------------------------");// Clear existing data before storing new items
     for (var item in items) {
-      await _box.put(item.id, item);
+      debugPrint("is store Items called-----------------------------");
+      await box.add(item);
     }
+    debugPrint('box value length-------------------------------------------------after storage${box.values.toList().length}');
   }
 
-  static List<Item> getItems() {
-    return _box.values.toList();
+  List<Item> getItems() {
+    return box.values.toList();
   }
 }

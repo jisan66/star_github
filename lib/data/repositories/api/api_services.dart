@@ -11,13 +11,15 @@ class ApiService {
     try {
       Response response = await _dio.get(ApiUrls().apiUrl);
 
+      debugPrint("///////////////////////////////////////////////////////////////////////");
+
       if (response.statusCode == 200) {
         List<Item> items = (response.data['items'] as List)
             .map((item) => Item.fromMap(item))
             .toList();
 
         debugPrint("---------------------------------------------------------------------");
-        await HiveService.storeItems(items);
+        await HiveService().storeItems(items);
       } else {
         throw Exception("Failed to load data, Status Code: ${response.statusCode}");
       }

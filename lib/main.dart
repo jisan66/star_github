@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:star_github/presentation/details_screen/details_screen.dart';
 import 'package:star_github/presentation/home_screen/homescreen_view.dart';
 import 'package:star_github/utils/themes/custom_theme.dart';
@@ -8,12 +9,14 @@ import 'core/models/hive_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
+
+  var dir = await getApplicationDocumentsDirectory();
+  await Hive.initFlutter(dir.path);
   Hive.registerAdapter(ItemAdapter());
   Hive.registerAdapter(LicenseAdapter());
   Hive.registerAdapter(OwnerAdapter());
   Hive.registerAdapter(AppDataAdapter());
-  Hive.openBox<Item>('items');
+  await Hive.openBox<Item>('items');
   runApp(const MyApp());
 }
 
