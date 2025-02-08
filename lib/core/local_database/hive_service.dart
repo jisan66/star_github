@@ -6,10 +6,12 @@ class HiveService {
   final Box<Item> _box = Hive.box<Item>('items');
   Box<Item> get box => _box;
 
-  Future<void> storeItems(List<Item> items) async {
+  Future<void> storeItems(List<Item> items, page, bool clearAll) async {
     debugPrint('is store items called??????');
 
-    await box.clear();
+    if(clearAll){
+      await box.clear();
+    }
     debugPrint("is store Items called-----------------------------");// Clear existing data before storing new items
     for (var item in items) {
       debugPrint("is store Items called-----------------------------");

@@ -25,11 +25,11 @@ class StarGithubBloc extends Bloc<StarGithubEvent, StarGithubState> {
     debugPrint("-----------------isNetworkOn -------------- $isConnected");
     try {
       if(isConnected){
-        await ApiService().fetchAndStoreItems();
+        await ApiService().fetchAndStoreItems(page: event.page);
       }
       final List<Item> items = HiveService().getItems() ?? [];
       debugPrint("hive item length---------------------------------------${items.length}");
-      emit(StarGithubLoaded(items));
+      emit(StarGithubLoaded(items, true));
     } catch (e) {
       debugPrint("is getting errorrrrrrrrrrrrrrrrrrrrrrr : ${e.toString()}");
       emit(StarGithubError(e.toString()));

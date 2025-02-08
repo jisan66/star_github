@@ -9,7 +9,8 @@ class StarGithubLoading extends StarGithubState {}
 
 class StarGithubLoaded extends StarGithubState {
   final List<Item> items;
-  StarGithubLoaded(this.items);
+  final bool hasMoreData;
+  StarGithubLoaded(this.items, this.hasMoreData);
 }
 
 class StarGithubError extends StarGithubState {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:star_github/presentation/details_screen/details_screen.dart';
+import 'package:star_github/presentation/home_screen/bloc/home_screen_bloc.dart';
 import 'package:star_github/presentation/home_screen/homescreen_view.dart';
 import 'package:star_github/utils/themes/custom_theme.dart';
 
@@ -26,10 +28,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: customTheme,
-      home: HomeScreen(),
+    return BlocProvider(
+      create:  (_) => StarGithubBloc()..add(FetchStarGithubRepos(page: 1)),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: customTheme,
+        home: HomeScreen(),
+      ),
     );
   }
 }

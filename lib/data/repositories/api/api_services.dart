@@ -7,9 +7,16 @@ import 'package:flutter/material.dart';
 class ApiService {
   final Dio _dio = Dio();
 
-  Future<void> fetchAndStoreItems() async {
+  Future<void> fetchAndStoreItems({int page = 1, int perPage = 10, String q = 'Android' , clearAll = false}) async {
     try {
-      Response response = await _dio.get(ApiUrls().apiUrl);
+      Response response = await _dio.get(
+        ApiUrls().apiUrl,
+        queryParameters: {
+          'page': page,       // Page number for pagination
+          'per_page': perPage, // Number of items per page
+          'q': q,       // Sorting criteria
+        },
+      );
 
       debugPrint("///////////////////////////////////////////////////////////////////////");
 
@@ -19,7 +26,7 @@ class ApiService {
             .toList();
 
         debugPrint("---------------------------------------------------------------------");
-        await HiveService().storeItems(items);
+        await HiveService().storeItems(items, page, clearAll);
       } else {
         throw Exception("Failed to load data, Status Code: ${response.statusCode}");
       }
