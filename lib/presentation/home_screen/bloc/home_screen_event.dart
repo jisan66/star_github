@@ -5,5 +5,6 @@ abstract class StarGithubEvent {}
 
 class FetchStarGithubRepos extends StarGithubEvent {
   final int page;
-  FetchStarGithubRepos({required this.page});
+  final bool clearAll;
+  FetchStarGithubRepos(this.clearAll, this.page);
 }

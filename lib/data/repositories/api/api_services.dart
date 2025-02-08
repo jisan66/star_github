@@ -6,33 +6,48 @@ import 'package:flutter/material.dart';
 
 class ApiService {
   final Dio _dio = Dio();
+  List<Item> items = [];
 
-  Future<void> fetchAndStoreItems({int page = 1, int perPage = 10, String q = 'Android' , clearAll = false}) async {
+  Future<List<Item>?> fetchAndStoreItems({int page = 1, int perPage = 15, String q = 'Android', bool clearAll = false}) async {
     try {
+      debugPrint("Fetching data from API... Page: $page, PerPage: $perPage");
+
       Response response = await _dio.get(
         ApiUrls().apiUrl,
         queryParameters: {
-          'page': page,       // Page number for pagination
-          'per_page': perPage, // Number of items per page
-          'q': q,       // Sorting criteria
+          'page': page,
+          'per_page': perPage,
+          'q': q,
         },
       );
 
-      debugPrint("///////////////////////////////////////////////////////////////////////");
-
       if (response.statusCode == 200) {
-        List<Item> items = (response.data['items'] as List)
+        if (response.data == null || response.data['items'] == null) {
+          debugPrint("API response is empty or invalid");
+          return null;
+        }
+
+        List<Item> newItems = (response.data['items'] as List)
             .map((item) => Item.fromMap(item))
             .toList();
 
-        debugPrint("---------------------------------------------------------------------");
-        await HiveService().storeItems(items, page, clearAll);
+        debugPrint("Fetched ${newItems.length} items from API");
+
+        if (newItems.isNotEmpty) {
+          await HiveService().storeItems(newItems, page, clearAll);
+        }
+
+        items = [...items,...newItems];
+
+        return items; // Returns true if more data might be available
       } else {
         throw Exception("Failed to load data, Status Code: ${response.statusCode}");
       }
     } on DioException catch (e) {
+      debugPrint("Dio error: ${e.message}");
       throw Exception("Dio error: ${e.message}");
     } catch (e) {
+      debugPrint("Unexpected error: $e");
       throw Exception("Unexpected error: $e");
     }
   }

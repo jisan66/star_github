@@ -4,23 +4,25 @@ import '../models/hive_model.dart';
 
 class HiveService {
   final Box<Item> _box = Hive.box<Item>('items');
-  Box<Item> get box => _box;
 
-  Future<void> storeItems(List<Item> items, page, bool clearAll) async {
-    debugPrint('is store items called??????');
+  // Expose stream to listen for changes
+  Stream<List<Item>> get itemsStream => _box.watch().map((_) => _box.values.toList());
 
-    if(clearAll){
-      await box.clear();
+  Future<void> storeItems(List<Item> items, int page, bool clearAll) async {
+    debugPrint('Storing items...');
+
+    if (clearAll) {
+      await _box.clear();
     }
-    debugPrint("is store Items called-----------------------------");// Clear existing data before storing new items
+
     for (var item in items) {
-      debugPrint("is store Items called-----------------------------");
-      await box.add(item);
+      await _box.add(item);
     }
-    debugPrint('box value length-------------------------------------------------after storage${box.values.toList().length}');
+
+    debugPrint('Hive data count after storage: ${_box.values.length}');
   }
 
   List<Item> getItems() {
-    return box.values.toList();
+    return _box.values.toList();
   }
 }

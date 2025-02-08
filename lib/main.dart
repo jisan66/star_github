@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create:  (_) => StarGithubBloc()..add(FetchStarGithubRepos(page: 1)),
+      create:  (_) => StarGithubBloc()..add(FetchStarGithubRepos(false, 1)),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: customTheme,
