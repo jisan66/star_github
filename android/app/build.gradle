@@ -7,7 +7,8 @@ plugins {
 
 android {
     namespace = "com.example.star_github.star_github"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35  // Update to Target SDK Version 35
+
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -20,21 +21,29 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.star_github.star_github"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 26
+        targetSdk = 35
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    // 🟢 Move signingConfigs ABOVE buildTypes
+    signingConfigs {
+        release {
+            storeFile file("../release-key.jks")
+            storePassword System.getenv("storePassword") ?: "z10221607"
+            keyAlias System.getenv("keyAlias") ?: "release-key"
+            keyPassword System.getenv("keyPassword") ?: "z10221607"
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.release  // Now this is valid ✅
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
