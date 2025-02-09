@@ -26,6 +26,8 @@ Before installing Popular GitRepos, ensure you have the following prerequisites:
 - Dart SDK (3.6.0)
 - Android Studio or Visual Studio Code
 - **Operating System**: Windows 10
+- Min Android SDK 26
+- Target SDK Version 35
 
 ### Installing
 
