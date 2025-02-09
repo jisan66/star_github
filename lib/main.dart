@@ -1,3 +1,4 @@
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -11,6 +12,9 @@ import 'core/models/hive_model.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
+  await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 7));
 
   var dir = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(dir.path);
@@ -31,6 +35,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create:  (_) => StarGithubBloc()..add(FetchStarGithubRepos(false, 1)),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: customTheme,
         home: HomeScreen(),

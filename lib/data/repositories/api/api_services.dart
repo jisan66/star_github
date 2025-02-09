@@ -8,7 +8,7 @@ class ApiService {
   final Dio _dio = Dio();
   List<Item> items = [];
 
-  Future<List<Item>?> fetchAndStoreItems({int page = 1, int perPage = 30, String q = 'Android', bool clearAll = false}) async {
+  Future<List<Item>?> fetchAndStoreItems({int page = 1, int perPage = 25, String q = 'Android', bool clearAll = false}) async {
     try {
       debugPrint("Fetching data from API... Page: $page, PerPage: $perPage");
 
@@ -36,7 +36,7 @@ class ApiService {
 
         debugPrint("Fetched ${newItems.length} items from API");
 
-        return newItems; // Returns true if more data might be available
+        return newItems;
       } else {
         throw Exception("Failed to load data, Status Code: ${response.statusCode}");
       }

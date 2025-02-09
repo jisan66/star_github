@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+
+Color backgroundColor = Color(0xFF17181c);
+Color primaryColor = Color(0xFF161b22);
+Color namePlateColor = Colors.white.withValues(alpha: .1);
+
 final ThemeData customTheme = ThemeData(
   primaryColor: Color(0xFF17181c),
   appBarTheme: AppBarTheme(

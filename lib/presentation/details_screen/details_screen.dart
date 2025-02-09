@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:star_github/core/models/hive_model.dart';
-import 'package:star_github/presentation/common_widgets/custom_appbar.dart';
-
+import 'package:fast_cached_network_image/fast_cached_network_image.dart';
+import 'package:star_github/utils/themes/custom_theme.dart';
 import '../../utils/services/date_formatter.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -15,7 +15,7 @@ class DetailsScreen extends StatelessWidget {
     String date = DateFormatter().formatDateString(item?.updatedAt ?? '');
 
     return Scaffold(
-      backgroundColor: Color(0xFF0d1117),
+      backgroundColor: backgroundColor,
       appBar: AppBar(title: Text('Repo Owner Details')),
       body: SingleChildScrollView(
         // Allow the content to scroll
@@ -27,38 +27,68 @@ class DetailsScreen extends StatelessWidget {
               // The image section can now scroll
               Container(
                 padding: EdgeInsets.all(16),
-                color: Color(0xFF161b22),
+                color: primaryColor,
                 child: Center(
                   child: Column(
                     spacing: 24,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        child: Container(
+                      Container(
+                        decoration: BoxDecoration(
                           color: Colors.grey,
-                          child: Image.network(
-                            item?.owner?.avatarUrl ?? '',
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        height: 150,
+                        width: 150,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: FastCachedImage(
+                            loadingBuilder: (context, progress) {
+                              return Center(
+                                child: Text(
+                                  "Loading...",
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white.withValues(alpha : .2),
+                                  ),
+                                ),
+                              );
+                            },
+                            url: item?.owner?.avatarUrl ?? "",
                             fit: BoxFit.cover,
-                            width: 150,  // Set a smaller width
-                            height: 150, // Set a smaller height
+                            fadeInDuration: const Duration(seconds: 1),
+                            errorBuilder: (context, exception, stackTrace) {
+                              return Center(
+                                child: Icon(
+                                  Icons.broken_image_outlined,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 350,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border:
-                              Border.all(color: Colors.white.withOpacity(.15)),
+                      )
+                      ,
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minWidth: 350
                         ),
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          item?.owner?.login ?? '',
-                          style: Theme.of(context).textTheme.titleLarge,
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: namePlateColor,
+                            borderRadius: BorderRadius.circular(8),
+                            border:
+                                Border.all(color: Colors.white.withValues(alpha: .15)),
+                          ),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            item?.owner?.login ?? '',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
                         ),
                       ),
                     ],
@@ -66,11 +96,12 @@ class DetailsScreen extends StatelessWidget {
                 ),
               ),
               Divider(
-                height: 4,
+                height: 24,
                 thickness: 0.1,
               ),
               // Repository details
               Container(
+                width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
                 color: Color(0xFF161b22),
                 child: Column(
@@ -82,12 +113,17 @@ class DetailsScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Text(
-                      'Repository Description : ${item?.description ?? ''}',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      'Repository Description',
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                     Text(
+                      item?.description ?? '',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    SizedBox(height: 20),
+                    Text(
                       'Last update : $date',
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ],
                 ),
