@@ -8,7 +8,7 @@ class ApiService {
   final Dio _dio = Dio();
   List<Item> items = [];
 
-  Future<List<Item>?> fetchAndStoreItems({int page = 1, int perPage = 15, String q = 'Android', bool clearAll = false}) async {
+  Future<List<Item>?> fetchAndStoreItems({int page = 1, int perPage = 30, String q = 'Android', bool clearAll = false}) async {
     try {
       debugPrint("Fetching data from API... Page: $page, PerPage: $perPage");
 
@@ -31,15 +31,12 @@ class ApiService {
             .map((item) => Item.fromMap(item))
             .toList();
 
+        debugPrint("clear all ---------------------$clearAll");
+        await HiveService().storeItems(newItems, page, clearAll);
+
         debugPrint("Fetched ${newItems.length} items from API");
 
-        if (newItems.isNotEmpty) {
-          await HiveService().storeItems(newItems, page, clearAll);
-        }
-
-        items = [...items,...newItems];
-
-        return items; // Returns true if more data might be available
+        return newItems; // Returns true if more data might be available
       } else {
         throw Exception("Failed to load data, Status Code: ${response.statusCode}");
       }

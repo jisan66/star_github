@@ -17,36 +17,54 @@ class StarGithubBloc extends Bloc<StarGithubEvent, StarGithubState> {
   final HiveService hiveService = HiveService();
   List<Item> items = [];
 
+
   StarGithubBloc() : super(StarGithubInitial()) {
+
     on<FetchStarGithubRepos>(_onFetchStarGithubRepos);
   }
 
   Future<void> _onFetchStarGithubRepos(
       FetchStarGithubRepos event, Emitter<StarGithubState> emit) async {
-    emit(StarGithubLoading());
+    debugPrint('is the event is firing 2 times firstly?');
+
+      emit(StarGithubLoading());
+      if(event.page == 1)
+        {
+          items.clear();
+        }
 
     bool isConnected = await NetworkConnectivity.checkConnectivity();
     debugPrint("-----------------isNetworkOn -------------- $isConnected");
 
     try {
+      debugPrint('is the try catch is loading 2 times????????????????');
       if (isConnected) {
-        // Fetch new data and store in Hive
-        items = await apiService.fetchAndStoreItems(clearAll: event.clearAll, page: event.page) ?? [];
-      }
-      else{
+        List<Item> newItems = await apiService.fetchAndStoreItems(
+          clearAll: event.clearAll,
+          page: event.page,
+        ) ??
+            [];
+        debugPrint('--------------------bloc item length-------------${newItems.length}');
+
+        if (newItems.isEmpty) {
+          debugPrint('1st one----------------------------------');
+          emit(StarGithubLoaded(items, false)); // No more data
+        } else {
+          items.addAll(newItems);
+          debugPrint('2nd one----------------------------------${items.length}');
+
+          emit(StarGithubLoaded(items, true)); // Still more data
+        }
+      } else {
         items = hiveService.getItems();
+        emit(StarGithubLoaded(items, false));
       }
-
-      // ✅ Fetch the latest Hive data after storing it
-
-      debugPrint("Hive item length after update: ${items.length}");
-
-      emit(StarGithubLoaded(items, true));
     } catch (e) {
       debugPrint("Error while fetching: ${e.toString()}");
       emit(StarGithubError(e.toString()));
     }
   }
+
 }
 
 
