@@ -6,13 +6,13 @@
 
 ## Description
 
-⦿ Fetch repositories from GitHub API using "Android" as the search keyword.
-⦿ Store fetched data in a local database for offline mode support.
-⦿ Display a list of repositories on the home page.
-⦿ Navigate to a detailed page by selecting a repository from the list.
-⦿ Show repository owner's name, profile picture, description, last update date (formatted as MM-DD-YYYY HH:SS).
-⦿ Pagination which 25 items and saves in local database.
-⦿ Cache Memory to store image for offline support.
+- Fetch repositories from GitHub API using "Android" as the search keyword.
+- Store fetched data in a local database for offline mode support.
+- Display a list of repositories on the home page.
+- Navigate to a detailed page by selecting a repository from the list.
+- Show repository owner's name, profile picture, description, last update date (formatted as MM-DD-YYYY HH:SS).
+- Pagination which 25 items and saves in local database.
+- Cache Memory to store image for offline support.
 
 ---
 
